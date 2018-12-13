@@ -269,13 +269,51 @@ class Imap {
       return imap_mail_move($this->mailbox, $messageRange, '{sslmail.webguyz.net:143/imap}Questionable');
     }
   
+
+    /**
+     * Returns an associative array with email subjects and message ids for all
+     * messages in the active $folder for 
+     *
+     * @return Associative array with message id as key and subject as value.
+     */
+    public function getMessageIdsSinceDate($date) {
+      $this->tickle();
+  
+
+      // Fetch overview of mailbox.
+
+      $messages =imap_search($this->mailbox, 'SINCE "8 August 2018"', SE_UID);
+      
+      echo "<pre>";
+      print_r($messages);
+      exit;
+
+      $number_messages = imap_num_msg($this->mailbox);
+      if ($number_messages) {
+        $overviews = imap_fetch_overview($this->mailbox, "1:" . imap_num_msg($this->mailbox), 0);
+      }
+      else {
+        $overviews = array();
+      }
+      $messageArray = array();
+  
+      // Loop through message overviews, build message array.
+      foreach($overviews as $overview) {
+        $messageArray[$overview->msgno] = $overview->subject;
+      }
+  
+      return $messageArray;
+    }
+
+
+
     /**
      * Returns an associative array with email subjects and message ids for all
      * messages in the active $folder.
      *
      * @return Associative array with message id as key and subject as value.
      */
-    public function getMessageIds() {
+    public function getMessageIds($uid = FALSE) {
       $this->tickle();
   
       // Fetch overview of mailbox.
@@ -290,7 +328,15 @@ class Imap {
   
       // Loop through message overviews, build message array.
       foreach($overviews as $overview) {
-        $messageArray[$overview->msgno] = $overview->subject;
+
+        // echo "<pre>";
+        // print_r($overview);
+        // exit;
+        if($uid){
+            $messageArray[$overview->uid] = $overview->subject;  
+        } else{
+            $messageArray[$overview->msgno] = $overview->subject;
+        }
       }
   
       return $messageArray;

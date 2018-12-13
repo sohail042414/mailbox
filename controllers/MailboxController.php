@@ -142,6 +142,9 @@ class MailboxController extends Controller
 
         //($host, $user, $pass, $port, $ssl = true, $folder = 'INBOX')
 
+
+        $test = $imap_box->getMessageIdsSinceDate('sfasfasf');
+
         $ids = $imap_box->getMessageIds();
 
         // echo "<pre>";
@@ -154,7 +157,6 @@ class MailboxController extends Controller
         foreach($ids as $id =>$title){
 
             $data = $imap_box->getMessage($id);
-
             $message = new Message();
             $message->message_id = "ID ".$id;
             $message->to = isset($data['to']) ? $data['to'] :"";
