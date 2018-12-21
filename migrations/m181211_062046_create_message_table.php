@@ -15,14 +15,17 @@ class m181211_062046_create_message_table extends Migration
 
         $this->createTable('{{%message}}', [
             'id' => $this->primaryKey(),
-            'message_id' => $this->string(10)->notNull(),
+            'mailbox_id' => $this->integer()->notNull(),
+            'message_uid' => $this->integer()->notNull(),
             'to' => $this->string(255)->notNull(),
             'from' => $this->string(255)->notNull(),
+            'type' => $this->string(20)->notNull(),
             'subject' => $this->string(255)->notNull(),
+            'date_sent' => $this->dateTime()->notNull(),
             'body' => $this->text()->notNull(),
             'raw_headers' => $this->text()->notNull(),
-            //'created_at' => $this->timestamp()->notNull(),
-            //'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_at' => $this->timestamp()->notNull()->defaultValue(0)
         ]);
     }
 

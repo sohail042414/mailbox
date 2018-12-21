@@ -20,7 +20,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'port')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'ssl')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'ssl')->checkbox(); ?>
+
+    <?= $form->field($model, 'folder')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

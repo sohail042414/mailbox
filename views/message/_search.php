@@ -17,17 +17,25 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'message_id') ?>
+    <?= $form->field($model, 'mail_uid') ?>
 
     <?= $form->field($model, 'to') ?>
 
     <?= $form->field($model, 'from') ?>
 
-    <?= $form->field($model, 'subject') ?>
+    <?= $form->field($model, 'type') ?>
+
+    <?php // echo $form->field($model, 'subject') ?>
+
+    <?php // echo $form->field($model, 'date_sent') ?>
 
     <?php // echo $form->field($model, 'body') ?>
 
     <?php // echo $form->field($model, 'raw_headers') ?>
+
+    <?php // echo $form->field($model, 'updated_at') ?>
+
+    <?php // echo $form->field($model, 'created_at') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

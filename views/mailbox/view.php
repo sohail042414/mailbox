@@ -35,6 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'password',
             'port',
             'ssl',
+            'folder',
+            'created_at',
+            'updated_at'
         ],
     ]) ?>
 

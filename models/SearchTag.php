@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Message;
+use app\models\Tag;
 
 /**
- * SearchMessage represents the model behind the search form of `app\models\Message`.
+ * SearchTag represents the model behind the search form of `app\models\Tag`.
  */
-class SearchMessage extends Message
+class SearchTag extends Tag
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class SearchMessage extends Message
     public function rules()
     {
         return [
-            [['id', 'message_uid', 'mailbox_id'], 'integer'],
-            [['to', 'from', 'type', 'subject', 'date_sent', 'body', 'raw_headers', 'updated_at', 'created_at'], 'safe'],
+            [['id'], 'integer'],
+            [['tag'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class SearchMessage extends Message
      */
     public function search($params)
     {
-        $query = Message::find();
+        $query = Tag::find();
 
         // add conditions that should always apply here
 
@@ -59,19 +59,9 @@ class SearchMessage extends Message
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'message_uid' => $this->message_uid,
-            'mailbox_id' => $this->mailbox_id,
-            'date_sent' => $this->date_sent,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'to', $this->to])
-            ->andFilterWhere(['like', 'from', $this->from])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'subject', $this->subject])
-            ->andFilterWhere(['like', 'body', $this->body])
-            ->andFilterWhere(['like', 'raw_headers', $this->raw_headers]);
+        $query->andFilterWhere(['like', 'tag', $this->tag]);
 
         return $dataProvider;
     }

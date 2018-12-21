@@ -24,24 +24,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'host',
             'user',
-            'password',
+            //'password',
             'port',
-            //'ssl',
-
-            //['class' => 'yii\grid\ActionColumn'],
+            'ssl',
             [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete}{load}',  // the default buttons + your custom button
-                'buttons' => [
-                    'load' => function($url, $model, $key) {     // render your custom button
-                        return Html::a("Load",['load', 'id' => $model->id]);
-                    }
-                ]
-            ]
+                'header' => 'Load Messages',
+                'filter' => false,
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a('Load', ['/mailbox/load', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                }
+            ],
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

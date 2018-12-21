@@ -23,15 +23,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
+            //['class' => 'yii\grid\SerialColumn'],
             'id',
-            'message_id',
-            'to',
+            //'message_uid',
+            [
+                'attribute' => 'mailbox_id',
+                'filter' => $mailboxes,
+                'value' => 'mailbox.user'
+            ],
+            //'to',
             'from',
+            'type',
             'subject',
+            'date_sent',
+            [
+                'header' => 'Apply Tags',
+                'filter' => false,
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a('Apply', ['/message/apply', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                }
+            ],
             //'body:ntext',
             //'raw_headers:ntext',
+            //'updated_at',
+            //'created_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

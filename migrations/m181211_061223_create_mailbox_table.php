@@ -13,24 +13,17 @@ class m181211_061223_create_mailbox_table extends Migration
     public function safeUp()
     {
 
-        // $host = 'imap.mail.yahoo.com';
-        // $user = 'sohail042414@yahoo.com';
-        // $pass = 'Iamnumber24';
-        // $port = 993;
-        // $ssl = true;
-        // $folder = 'INBOX';
-
         $this->createTable('{{%mailbox}}', [
             'id' => $this->primaryKey(),
             'host' => $this->string(50)->notNull(),
-            'user' => $this->string(150)->notNull(),
-            'password' => $this->string(50)->notNull(),
+            'user' => $this->string(150)->notNull()->unique(),
+            'password' => $this->string(100)->notNull(),
             'port' => $this->string(50)->notNull(),
-            'ssl' => $this->string(50)->notNull(),
-            //'created_at' => $this->timestamp()->notNull(),
-            //'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'folder' => $this->string(50)->notNull()->defaultValue('INBOX'),
+            'ssl' => $this->boolean()->notNull()->defaultValue(true),
+            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'created_at' => $this->timestamp()->notNull()->defaultValue(0),
         ]);
-
     }
 
     /**

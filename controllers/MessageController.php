@@ -3,11 +3,13 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\DomHelper;
 use app\models\Message;
 use app\models\SearchMessage;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Mailbox;
 
 /**
  * MessageController implements the CRUD actions for Message model.
@@ -36,11 +38,21 @@ class MessageController extends Controller
     public function actionIndex()
     {
         $searchModel = new SearchMessage();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $data = \app\models\Mailbox::find()->where('id > 0')->all();
+
+        $mailboxes = array();
+
+        foreach ($data as $objecet) {
+            $mailboxes[$objecet->id] = $objecet->user;
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'mailboxes' => $mailboxes
         ]);
     }
 
@@ -52,9 +64,46 @@ class MessageController extends Controller
      */
     public function actionView($id)
     {
+
+        $model = $this->findModel($id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
+    }
+
+    public function actionApply($id)
+    {
+        $model = $this->findModel($id);
+
+        $tags = \app\models\Tag::find()->where('id > 0')->all();
+
+        $findings = [];
+
+        foreach ($tags as $obj) {
+
+            $tag = $obj->tag;
+
+            //$tag = 'account';
+
+            preg_match_all('/\b' . $tag . '\b/', $model->body, $matches);
+
+            if (isset($matches[0]) && count($matches[0]) > 0) {
+                $findings[] = [
+                    'tag_id' => $obj->id,
+                    'message_id' => $model->id,
+                    'count' => count($matches[0])
+                ];
+            }
+        }
+
+
+        echo $model->body;
+
+
+        echo "<pre>";
+        print_r($findings);
+        exit;
     }
 
     /**

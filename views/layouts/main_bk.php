@@ -36,14 +36,13 @@ AppAsset::register($this);
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-left'],
+        'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Mailboxes', 'url' => ['/mailbox/index']],
             ['label' => 'Messages', 'url' => ['/message/index']],
-            ['label' => 'Tags', 'url' => ['/tag/index']],
-            //['label' => 'About', 'url' => ['/site/about']],
-            //['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/site/login']]) : ('<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(

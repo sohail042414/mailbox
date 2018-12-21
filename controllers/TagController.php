@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Mailbox;
-use app\models\Message;
-use app\models\SearchMailbox;
+use app\models\Tag;
+use app\models\SearchTag;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MailboxController implements the CRUD actions for Mailbox model.
+ * TagController implements the CRUD actions for Tag model.
  */
-class MailboxController extends Controller
+class TagController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +30,12 @@ class MailboxController extends Controller
     }
 
     /**
-     * Lists all Mailbox models.
+     * Lists all Tag models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchMailbox();
+        $searchModel = new SearchTag();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +45,7 @@ class MailboxController extends Controller
     }
 
     /**
-     * Displays a single Mailbox model.
+     * Displays a single Tag model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,13 +58,13 @@ class MailboxController extends Controller
     }
 
     /**
-     * Creates a new Mailbox model.
+     * Creates a new Tag model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Mailbox();
+        $model = new Tag();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -77,7 +76,7 @@ class MailboxController extends Controller
     }
 
     /**
-     * Updates an existing Mailbox model.
+     * Updates an existing Tag model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,29 +95,8 @@ class MailboxController extends Controller
         ]);
     }
 
-
     /**
-     * Loads emails for a single mailbox.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-
-    public function actionLoad($id)
-    {
-
-        $model = $this->findModel($id);
-        
-        $model->fetchEmails();
-
-        return $this->render('load', [
-            'model' => $model,
-        ]);
-    }
-
-
-    /**
-     * Deletes an existing Mailbox model.
+     * Deletes an existing Tag model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -132,15 +110,15 @@ class MailboxController extends Controller
     }
 
     /**
-     * Finds the Mailbox model based on its primary key value.
+     * Finds the Tag model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Mailbox the loaded model
+     * @return Tag the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Mailbox::findOne($id)) !== null) {
+        if (($model = Tag::findOne($id)) !== null) {
             return $model;
         }
 
