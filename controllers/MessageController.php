@@ -72,38 +72,31 @@ class MessageController extends Controller
         ]);
     }
 
+    /**
+     * Process all messages for tags. 
+     */
+
+    public function actionProcess()
+    {
+        $model = new Message();
+        if ($model->processTags()) {
+            Yii::$app->session->setFlash('success', "All messages filtered for all tags.");
+        } else {
+            Yii::$app->session->setFlash('error', "There was some error, please try again!");
+        }
+        return $this->redirect('/');
+    }
+
+    /**
+     * Search/process tags in a single message (mail)
+     */
+
     public function actionApply($id)
     {
         $model = $this->findModel($id);
-
-        $tags = \app\models\Tag::find()->where('id > 0')->all();
-
-        $findings = [];
-
-        foreach ($tags as $obj) {
-
-            $tag = $obj->tag;
-
-            //$tag = 'account';
-
-            preg_match_all('/\b' . $tag . '\b/', $model->body, $matches);
-
-            if (isset($matches[0]) && count($matches[0]) > 0) {
-                $findings[] = [
-                    'tag_id' => $obj->id,
-                    'message_id' => $model->id,
-                    'count' => count($matches[0])
-                ];
-            }
-        }
-
-
-        echo $model->body;
-
-
-        echo "<pre>";
-        print_r($findings);
-        exit;
+        $model->applyTags();
+        Yii::$app->session->setFlash('success', "Applied tags for this message.");
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

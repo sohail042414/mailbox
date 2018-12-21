@@ -66,9 +66,85 @@ class Message extends \yii\db\ActiveRecord
         ];
     }
 
-
     public function getMailbox()
     {
         return $this->hasOne(Mailbox::className(), ['id' => 'mailbox_id']);
     }
+
+
+    public function processTags()
+    {
+
+        $records = $this->find()->where('id > 0')->all();
+
+        foreach ($records as $model) {
+            $model->applyTags();
+        }
+
+        return true;
+    }
+
+
+    public function applyTags()
+    {
+        $tag_model = new \app\models\Tag();
+
+        $model = $this;
+        
+        //delete all taging for current message. 
+        \app\models\MessageTag::deleteAll('message_id = ' . $this->id);
+        
+        //get all tags and process. 
+        $tags = $tag_model->find()->where('id > 0')->all();
+
+        $findings = [];
+
+        foreach ($tags as $obj) {
+
+            $tag = $obj->tag;
+
+            //search in subject
+            preg_match_all('/\b' . $tag . '\b/', $model->subject, $matches);
+
+            if (isset($matches[0]) && count($matches[0]) > 0) {
+                $findings[] = [
+                    'tag_id' => $obj->id,
+                    'message_id' => $model->id,
+                    'count' => count($matches[0]),
+                    'position' => 'subject',
+                ];
+            }
+
+            //search in body.
+            preg_match_all('/\b' . $tag . '\b/', $model->body, $matches);
+
+            if (isset($matches[0]) && count($matches[0]) > 0) {
+                $findings[] = [
+                    'tag_id' => $obj->id,
+                    'message_id' => $model->id,
+                    'count' => count($matches[0]),
+                    'position' => 'body',
+                ];
+            }
+            //search in headers
+            preg_match_all('/\b' . $tag . '\b/', $model->raw_headers, $matches);
+
+            if (isset($matches[0]) && count($matches[0]) > 0) {
+                $findings[] = [
+                    'tag_id' => $obj->id,
+                    'message_id' => $model->id,
+                    'count' => count($matches[0]),
+                    'position' => 'headers',
+                ];
+            }
+        }
+
+        $tag_model->saveFoundTags($findings);
+    }
+
+
+
+
+
+
 }

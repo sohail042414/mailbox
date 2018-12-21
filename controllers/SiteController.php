@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\Tag;
 use app\models\ContactForm;
 
 class SiteController extends Controller
@@ -61,7 +62,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $tag_model = new Tag();
+        $top_tags = $tag_model->getTopTags();
+
+        return $this->render('index', [
+            'top_tags' => $top_tags
+        ]);
     }
 
     /**

@@ -38,6 +38,12 @@ class m181220_195907_create_tag_table extends Migration
             ],
             [
                 'tag' => 'demand',
+            ],
+            [
+                'tag' => 'secure',
+            ],
+            [
+                'tag' => 'password',
             ]
 
         ]);
@@ -47,6 +53,7 @@ class m181220_195907_create_tag_table extends Migration
             'message_id' => $this->integer(),
             'tag_id' => $this->integer(),
             'count' => $this->smallInteger()->defaultValue(1),
+            'position' => "ENUM('headers', 'subject', 'body')"
         ]);
 
     }
@@ -57,5 +64,6 @@ class m181220_195907_create_tag_table extends Migration
     public function safeDown()
     {
         $this->dropTable('tag');
+        $this->dropTable('message_tag');
     }
 }
