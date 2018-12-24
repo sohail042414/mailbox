@@ -31,5 +31,12 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
+/.htaccess
+
+/.htaccess_live
+/composer.json_live
+/composer.lock_live
+AppAsset_live.php
 
 /config/db.php
+/config/db_live.php
