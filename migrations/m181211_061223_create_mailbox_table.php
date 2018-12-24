@@ -12,7 +12,6 @@ class m181211_061223_create_mailbox_table extends Migration
      */
     public function safeUp()
     {
-
         $this->createTable('{{%mailbox}}', [
             'id' => $this->primaryKey(),
             'host' => $this->string(50)->notNull(),
@@ -22,7 +21,7 @@ class m181211_061223_create_mailbox_table extends Migration
             'folder' => $this->string(50)->notNull()->defaultValue('INBOX'),
             'ssl' => $this->boolean()->notNull()->defaultValue(true),
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            'created_at' => $this->timestamp()->notNull()->defaultValue(0),
+            'created_at' => $this->integer()->notNUll()->defaultValue(0)
         ]);
     }
 

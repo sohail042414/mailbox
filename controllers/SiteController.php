@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+use app\models\SignupForm;
 use app\models\LoginForm;
 use app\models\Tag;
 use app\models\ContactForm;
@@ -71,6 +72,29 @@ class SiteController extends Controller
     }
 
     /**
+     * 
+     */
+
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+
+
+    /**
      * Login action.
      *
      * @return Response|string
@@ -131,4 +155,26 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    /**
+     * create admin user. 
+     */
+
+    public function actionAddAdmin()
+    {
+        $model = User::find()->where(['username' => 'admin'])->one();
+        if (empty($model)) {
+            $user = new User();
+            $user->username = 'admin';
+            $user->email = 'admin@admin.com';
+            $user->setPassword('admin');
+            $user->generateAuthKey();
+            if ($user->save()) {
+                echo 'good';
+            }
+        }
+    }
+
+
+
 }

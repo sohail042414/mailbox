@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=imap_project',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=imap_project',
     'username' => 'root',
     'password' => 'root',
     'charset' => 'utf8',

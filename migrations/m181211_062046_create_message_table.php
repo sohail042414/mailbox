@@ -25,7 +25,7 @@ class m181211_062046_create_message_table extends Migration
             'body' => $this->text()->notNull(),
             'raw_headers' => $this->text()->notNull(),
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            'created_at' => $this->timestamp()->notNull()->defaultValue(0)
+            'created_at' => $this->integer()->notNUll()->defaultValue(0)
         ]);
     }
 
