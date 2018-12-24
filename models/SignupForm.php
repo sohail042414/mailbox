@@ -52,6 +52,8 @@ class SignupForm extends Model
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
+        $user->created_at = time();
+        $user->updated_at = date('Y-m-d h:i:s', time());
         return $user->save() ? $user : null;
     }
 
