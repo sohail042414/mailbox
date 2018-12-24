@@ -38,5 +38,4 @@ tests/_support/_generated
 /composer.lock_live
 AppAsset_live.php
 
-/config/db.php
-/config/db_live.php
+/config/*
